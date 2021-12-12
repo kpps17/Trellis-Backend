@@ -1,0 +1,11 @@
+{
+  "name": "trellis-rest-api",
+  "version": "1.0.0",
+  "description": "trello clone rest-api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kpps17",
+  "license": "ISC"
+}
