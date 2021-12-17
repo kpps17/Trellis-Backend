@@ -39,5 +39,27 @@ router.post('/register', async (req, res) => {
     }
 })
 
+// 2. user login end-point
+router.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        // checking consistency of username and password entered by the client
+        if(!username || !password) return res.status(200).json({ error: "Empty fields not allowed" });
+        
+        // checking if username exists or not
+        const findUser = await user.findOne({username});
+        if(!findUser) return res.status(200).json({ error: "Username or password incorrect" });
+
+        // checking the password is same as that entered by the client
+        const isPasswordSame = await bcrypt.compare(password, findUser.password);
+        if(!isPasswordSame) return res.status(200).json({ error: "Username or password incorrect" });
+
+        // assigning jwt to the client
+        const token = jwt.sign({ id: findUser._id}, process.env.JWT_SECRET);
+        return res.status(201).json({token, user: {id: findUser._id, username: findUser.username}});
+    } catch (error) {
+        return res.status(200).json({error: error.message});
+    }
+})
 
 module.exports = router;
